@@ -5,6 +5,11 @@
 npm install
 ```
 
+### Start the mock server (json-server)
+```
+npm run backend
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
