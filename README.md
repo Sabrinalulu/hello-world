@@ -5,7 +5,7 @@
 npm install
 ```
 
-### Start the mock server (json-server)
+### Starts the mock server (json-server)
 ```
 npm run backend
 ```
