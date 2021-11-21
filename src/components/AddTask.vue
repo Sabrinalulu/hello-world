@@ -9,6 +9,12 @@
         <input type="text" v-model="day" name="day" placeholder="Add Day and Time"/>
     </div>
     <div class="form-control form-control-check">
+        <label>Choose Category</label>
+        <select v-model="category">
+            <option :key="category.id" v-for="category in categories ">{{category.name}}</option>
+        </select>
+    </div>
+    <div class="form-control form-control-check">
         <label>Set Reminder</label>
         <input type="checkbox" v-model="reminder" name="reminder"/>
     </div>
@@ -24,7 +30,9 @@ export default {
         return {
             text: '',
             day: '',
-            reminder: false
+            reminder: false,
+            categories:'',
+            category:'',
         }
     },
     methods: {
@@ -40,7 +48,8 @@ export default {
                 // id: Math.floor(Math.random()*100000),
                 text: this.text,
                 day: this.day,
-                reminder: this.reminder
+                reminder: this.reminder,
+                category: this.category,
             }
             // emit upward console.log(newTask);
             this.$emit('add-task', newTask);
@@ -48,7 +57,15 @@ export default {
             this.text = '';
             this.day = '';
             this.reminder = false;
-        }
+        },
+        async fetchCategories() {
+            const res = await fetch("api/categories");
+            const data = await res.json();
+            return data;
+        },
+    },
+    async created() {
+        this.categories = await this.fetchCategories();
     }
 }
 </script>
