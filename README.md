@@ -1,4 +1,4 @@
-# hello-world
+# task-tracker
 
 ## Project setup
 ```
