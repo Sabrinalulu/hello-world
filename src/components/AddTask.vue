@@ -1,102 +1,125 @@
 <template>
-<form @submit="onSubmit" class="add-form">
+  <form @submit="onSubmit" class="add-form">
     <div class="form-control">
-        <label>Task</label>
-        <input type="text" v-model="text" name="text" placeholder="Add Task"/>
+      <label>Task</label>
+      <input type="text" v-model="text" name="text" placeholder="Add Task" />
     </div>
     <div class="form-control">
-        <label>Day and Time</label>
-        <input type="text" v-model="day" name="day" placeholder="Add Day and Time"/>
+      <label>Day and Time</label>
+      <DatePicker v-model="date" mode="dateTime" :minute-increment="5" is24hr>
+        <template v-slot="{ inputValue, inputEvents }">
+          <input
+            class="
+              px-2
+              py-1
+              border
+              rounded
+              focus:outline-none focus:border-blue-300
+            "
+            :value="inputValue"
+            v-on="inputEvents"
+          />
+        </template>
+      </DatePicker>
+    </div>
+    <div class="form-control form-control-select">
+      <label>Choose a Category</label>
+      <select v-model="category">
+        <option :key="category.id" v-for="category in categories">
+          {{ category.name }}
+        </option>
+      </select>
     </div>
     <div class="form-control form-control-check">
-        <label>Choose Category</label>
-        <select v-model="category">
-            <option :key="category.id" v-for="category in categories ">{{category.name}}</option>
-        </select>
+      <label>Set Reminder</label>
+      <input type="checkbox" v-model="reminder" name="reminder" />
     </div>
-    <div class="form-control form-control-check">
-        <label>Set Reminder</label>
-        <input type="checkbox" v-model="reminder" name="reminder"/>
-    </div>
-    <input type="submit" value="Save Task" class="btn btn-block">
-</form>
+    <input type="submit" value="Save Task" class="btn btn-warning" />
+  </form>
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
-    name: 'AddTask',
-    data() {
-        // we want to bind these values to the inputs -> v-model
-        return {
-            text: '',
-            day: '',
-            reminder: false,
-            categories:'',
-            category:'',
-        }
+  name: "AddTask",
+  data() {
+    return {
+      text: "",
+      date: new Date(),
+      reminder: false,
+      categories: "",
+      category: "",
+    };
+  },
+  methods: {
+    onSubmit(e) {
+      e.preventDefault();
+      if (!this.text) {
+        alert("Please add a task");
+        return;
+      }
+      const newTask = {
+        text: this.text,
+        date: moment(this.date).format("YYYY-MM-DD HH:mm a"),
+        reminder: this.reminder,
+        category: this.category,
+      };
+
+      this.$emit("add-task", newTask);
+      // clear the things
+      this.text = "";
+      this.date = null;
+      this.reminder = false;
     },
-    methods: {
-        onSubmit(e){
-            e.preventDefault();
-            if(!this.text) {
-                alert('Please add a task');
-                return 
-            }
-            const newTask = {
-                // prevent to get repeating id
-                // if using json server, it will create an id automatically
-                // id: Math.floor(Math.random()*100000),
-                text: this.text,
-                day: this.day,
-                reminder: this.reminder,
-                category: this.category,
-            }
-            // emit upward console.log(newTask);
-            this.$emit('add-task', newTask);
-            // clear the things 
-            this.text = '';
-            this.day = '';
-            this.reminder = false;
-        },
-        async fetchCategories() {
-            const res = await fetch("api/categories");
-            const data = await res.json();
-            return data;
-        },
+    async fetchCategories() {
+      const res = await fetch("api/categories");
+      const data = await res.json();
+      return data;
     },
-    async created() {
-        this.categories = await this.fetchCategories();
-    }
-}
+  },
+  async created() {
+    this.categories = await this.fetchCategories();
+  },
+};
 </script>
 
 <style scoped>
 .add-form {
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 .form-control {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 .form-control label {
-    display: block;
+  display: block;
 }
 .form-control input {
-    width: 100%;
-    height: 40px;
-    margin: 5px;
-    padding: 3px 7px;
-    font-size: 17px;
+  width: 100%;
+  height: 40px;
+  margin: 5px;
+  padding: 3px 7px;
+  font-size: 17px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+}
+.form-control-select {
+  display: flex;
+  justify-content: space-between;
 }
 .form-control-check {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .form-control-check label {
-    flex: 1;
+  flex: 1;
 }
 .form-control-check input {
-    flex: 2;
-    height: 20px;
+  flex: 2;
+  height: 20px;
+}
+input[type="submit"] {
+  font-weight: bold;
 }
 </style>
