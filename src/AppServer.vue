@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <Function />
-    <Header @toggle-add-task="toggleAddTask" title="Task Tracker" :showAddTask="showAddTask"/>
+    <Header
+      @toggle-add-task="toggleAddTask"
+      title="Task Tracker"
+      :showAddTask="showAddTask"
+    />
 
     <router-view :showAddTask="showAddTask"></router-view>
     <Footer />
@@ -9,32 +13,36 @@
 </template>
 
 <script>
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Function from './components/Function'
-export default {
-  name: 'AppServer',
+import { reactive, ref, defineComponent } from "vue";
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
+import Function from "./components/Function.vue";
+
+export default defineComponent({
+  name: "AppServer",
   components: {
     Header,
     Footer,
     Function,
   },
-  data() {
+  setup() {
+    let tasks = reactive([]);
+    let showAddTask = ref(false);
+
+    const toggleAddTask = () => {
+      showAddTask.value = !showAddTask.value;
+    };
     return {
-      tasks: [],
-      showAddTask: false
-    }
+      tasks,
+      showAddTask,
+      toggleAddTask,
+    };
   },
-  methods: {
-    toggleAddTask(){
-      this.showAddTask = !this.showAddTask;
-    },
-  }
-}
+});
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro');
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro");
 
 * {
   box-sizing: border-box;
@@ -43,7 +51,7 @@ export default {
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .container {
