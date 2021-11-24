@@ -1,13 +1,12 @@
 <template>
   <header>
     <h1>{{ title }}</h1>
-    <Button v-show="homePage"
+    <Button
+      v-show="homePage"
       @toggle-btn="$emit('toggle-add-task')"
       :text="showAddTask ? 'Close' : 'Add Task'"
-      :color="showAddTask ? 'orange' : 'purple'"
+      :class="showAddTask ? 'btn btn-warning' : 'btn btn-dark'"
     />
-    <!-- <Button text="Update Task" color="blue"/>
-        <Button text="Delete Task" color="red"/> -->
   </header>
 </template>
 

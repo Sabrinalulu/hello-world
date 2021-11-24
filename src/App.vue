@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Function />
+    <Tab />
     <Header
       @toggle-add-task="toggleAddTask"
       title="Task Tracker"
@@ -13,36 +13,33 @@
 </template>
 
 <script>
-import { reactive, ref, defineComponent } from "vue";
-import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue";
-import Function from "./components/Tab.vue";
+import Header from './components/Header'
+import Footer from './components/Footer'
+import Tab from './components/Tab'
 
-export default defineComponent({
-  name: "AppServer",
+export default {
+  name: 'App',
   components: {
     Header,
     Footer,
-    Function,
+    Tab,
   },
-  setup() {
-    let tasks = reactive([]);
-    let showAddTask = ref(false);
-
-    const toggleAddTask = () => {
-      showAddTask.value = !showAddTask.value;
-    };
+  data() {
     return {
-      tasks,
-      showAddTask,
-      toggleAddTask,
-    };
+      tasks: [],
+      showAddTask: false
+    }
   },
-});
+  methods: {
+    toggleAddTask(){
+      this.showAddTask = !this.showAddTask;
+    },
+  }
+}
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro");
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro');
 
 * {
   box-sizing: border-box;
@@ -51,7 +48,7 @@ export default defineComponent({
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .container {

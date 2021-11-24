@@ -1,7 +1,7 @@
 <template>
   <header>
-    <router-link to="/">Tasks</router-link> |
-    <router-link to="/portal">Portal</router-link><br>
+    <router-link to="/portal">Categories</router-link> |
+    <router-link to="/">Tasks</router-link>
   </header>
 </template>
 

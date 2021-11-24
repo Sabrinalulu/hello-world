@@ -7,7 +7,6 @@
     @delete-task="deleteTask"
     :tasks="tasks"
   /> 
-  <!-- v-bind tasks to the tasks data -->
 </template>
 
 <script>
@@ -43,7 +42,6 @@ export default {
       this.tasks = [...this.tasks, data];
     },
     async deleteTask(id) {
-      // console.log('task', id);
       if (confirm("Are you sure?")) {
         const res = await fetch(`api/tasks/${id}`, {
           method: "DELETE",
