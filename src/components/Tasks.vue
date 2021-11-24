@@ -1,7 +1,9 @@
 <template>
-  <label>filter</label>
+  <label>Filter</label>
   <select v-model="category">
-      <option :key="category.id" v-for="category in categories">{{category.name}}</option>
+    <option :key="category.id" v-for="category in categories">
+      {{ category.name }}
+    </option>
   </select>
   <div :key="task.id" v-for="task in tasks">
     <Task
@@ -10,7 +12,6 @@
       :task="task"
       v-if="filter(task.category)"
     />
-    <!-- <h3>{{task.text}}</h3> -->
   </div>
 </template>
 
@@ -38,7 +39,7 @@ export default {
       return data;
     },
     filter(name){
-      if(this.category=="" || this.category=="all"){
+      if(this.category=="" || this.category=="All"){
         return true;
       }
       if(this.category == name){
@@ -53,3 +54,13 @@ export default {
   },
 };
 </script>
+
+<style>
+label {
+  font-weight: bold;
+  font-size: 16px;
+}
+select {
+  display: flex;
+}
+</style>
