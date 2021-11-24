@@ -1,7 +1,11 @@
 <template>
   <div class="container">
-    <Function />
-    <Header @toggle-add-task="toggleAddTask" title="Task Tracker" :showAddTask="showAddTask"/>
+    <Tab />
+    <Header
+      @toggle-add-task="toggleAddTask"
+      title="Task Tracker"
+      :showAddTask="showAddTask"
+    />
 
     <router-view :showAddTask="showAddTask"></router-view>
     <Footer />
@@ -11,13 +15,14 @@
 <script>
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Function from './components/Function'
+import Tab from './components/Tab'
+
 export default {
-  name: 'AppServer',
+  name: 'App',
   components: {
     Header,
     Footer,
-    Function,
+    Tab,
   },
   data() {
     return {
