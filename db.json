@@ -1,53 +1,46 @@
 {
   "tasks": [
     {
-      "id": "1",
-      "text": "Doctors Appointment",
-      "day": "March 1st at 2:30pm",
-      "category": "meeting",
-      "reminder": true
-    },
-    {
-      "id": "3",
-      "text": "Food Shopping",
-      "day": "March 3rd at 11:00am",
-      "category": "meeting",
-      "reminder": false
+      "text": "Meet Parents",
+      "date": "2021-11-27 18:30 pm",
+      "reminder": true,
+      "category": "Important",
+      "id": 1
     },
     {
       "text": "Go to Dentist",
-      "day": "March 10th at 2:00pm",
+      "date": "2021-11-25 15:00 pm",
       "reminder": true,
-      "category": "meeting",
-      "id": "icLmkD4"
+      "category": "Important",
+      "id": 2
     },
     {
-      "text": "Meet Parents",
-      "day": "March 15th at 7:00pm",
+      "text": "Meet my Boss",
+      "date": "2021-11-26 10:15 am",
       "reminder": false,
-      "category": "meeting",
-      "id": "3Q9IEuR"
+      "category": "Meetings",
+      "id": 3
     },
     {
-      "text": "important1",
-      "day": "today!!!!!!!!!",
+      "text": "Food Shopping",
+      "date": "2021-11-25 17:00 pm",
       "reminder": false,
-      "category": "important",
-      "id": "twB4LSP"
+      "category": "",
+      "id": 4
     }
   ],
   "categories": [
     {
-      "id": "3Q9IEu3",
-      "name": "all"
+      "name": "All",
+      "id": 1
     },
     {
-      "id": "3Q9IEu4",
-      "name": "meeting"
+      "name": "Important",
+      "id": 2
     },
     {
-      "id": "3Q9IEu5",
-      "name": "important"
+      "name": "Meetings",
+      "id": 3
     }
   ]
 }
