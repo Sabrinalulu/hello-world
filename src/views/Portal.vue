@@ -1,17 +1,29 @@
 <template>
-  <header>
-    <label>New Category</label><br/>
-    <input type="text" v-model="inputCategory"/> |
-    <input type="button" value="add" @click="addCategory()"/>
-  </header>
-  <br/>
-  <label>Category list</label>
-  <ul>
-    <li :key="category.id" v-for="category in categories">
-      {{category.name}}
-      <i @click="onDelete(category.id)" class="fas fa-times"></i>
-    </li>
-  </ul>
+  <div class="add-control">
+    <label>Add Category</label><br />
+    <input type="text" v-model="inputCategory" />
+    <button type="button" class="btn btn-primary" @click="addCategory()">
+      Add
+    </button>
+  </div>
+  <br />
+  <div class="list-display">
+    <label>Category list</label>
+    <ul class="list-group">
+      <li
+        class="list-group-item"
+        :key="category.id"
+        v-for="category in categories"
+      >
+        {{ category.name }}
+        <i
+          v-if="category.id != 1"
+          @click="onDelete(category.id)"
+          class="fas fa-times"
+        ></i>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -69,3 +81,30 @@ export default {
 };
 </script>
 
+<style scoped>
+.add-control {
+  margin: 20px 0;
+}
+.add-control label {
+  display: block;
+}
+.add-control input {
+  width: 80%;
+  height: 40px;
+  margin: 5px;
+  padding: 3px 7px;
+  font-size: 17px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+}
+.list-display label {
+  font-weight: bold;
+  font-size: 20px;
+}
+.list-display li {
+  list-style-type: none;
+}
+.list-display i {
+  float: right;
+}
+</style>
