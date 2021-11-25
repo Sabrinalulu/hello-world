@@ -55,8 +55,7 @@ export default defineComponent({
       }
       return false;
     };
-    //emits: ["delete-task", "toggle-reminder"],
-    // this.categories = await this.fetchCategories();
+
     return {
       categories,
       category,
@@ -64,26 +63,6 @@ export default defineComponent({
       filter,
     };
   },
-  // methods: {
-  //   async fetchCategories() {
-  //     const res = await fetch("api/categories");
-  //     const data = await res.json();
-  //     return data;
-  //   },
-  //   filter(name) {
-  //     if (this.category == "" || this.category == "All") {
-  //       return true;
-  //     }
-  //     if (this.category == name) {
-  //       return true;
-  //     }
-  //     return false;
-  //   },
-  // },
-  // emits: ["delete-task", "toggle-reminder"],
-  // async created() {
-  //   this.categories = await this.fetchCategories();
-  // },
 });
 </script>
 

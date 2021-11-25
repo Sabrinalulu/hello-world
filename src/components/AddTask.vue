@@ -73,13 +73,11 @@ export default defineComponent({
       text.value = "";
       date.value = new Date();
       reminder.value = false;
-      // console.log(context);
     };
     const fetchCategories = () => {
       console.log("fetchCategories");
     };
 
-    //this.categories = await this.fetchCategories();
     return {
       text,
       date,
@@ -90,35 +88,6 @@ export default defineComponent({
       onSubmit,
     };
   },
-  // methods: {
-  //   onSubmit(e) {
-  //     e.preventDefault();
-  //     if (!this.text) {
-  //       alert("Please add a task");
-  //       return;
-  //     }
-  //     const newTask = {
-  //       text: this.text,
-  //       date: moment(this.date).format("YYYY-MM-DD HH:mm a"),
-  //       reminder: this.reminder,
-  //       category: this.category,
-  //     };
-
-  //     this.$emit("add-task", newTask);
-  //     // clear the things
-  //     this.text = "";
-  //     this.date = null;
-  //     this.reminder = false;
-  //   },
-  // async fetchCategories() {
-  //   const res = await fetch("api/categories");
-  //   const data = await res.json();
-  //   return data;
-  // },
-  // },
-  // async created() {
-  //   this.categories = await this.fetchCategories();
-  // },
 });
 </script>
 
