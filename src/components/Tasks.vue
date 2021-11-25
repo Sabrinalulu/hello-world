@@ -15,7 +15,8 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref, defineComponent } from "vue";
+import { reactive, ref, defineComponent, onMounted } from "vue";
+import { Category } from "./beans.vue";
 import Task from "./Task.vue";
 
 export default defineComponent({
@@ -27,23 +28,12 @@ export default defineComponent({
     Task,
   },
   setup() {
-    let categories = reactive([
-      {
-        name: "All",
-        id: 1,
-      },
-      {
-        name: "Important",
-        id: 2,
-      },
-      {
-        name: "Meetings",
-        id: 3,
-      },
-    ]);
+    let categories = reactive<Category[]>([]);
     let category = ref("");
-    const fetchCategories = () => {
-      console.log("fetchCategories");
+    const fetchCategories = async () => {
+      const res = await fetch(process.env.VUE_APP_API_URL + "/categories");
+      const data = await res.json();
+      categories.push(...data);
     };
 
     const filter = (name: string) => {
@@ -55,6 +45,10 @@ export default defineComponent({
       }
       return false;
     };
+
+    onMounted(() => {
+      fetchCategories();
+    });
 
     return {
       categories,
