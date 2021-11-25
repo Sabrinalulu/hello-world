@@ -33,28 +33,17 @@
 
 <script lang = "ts">
 import moment from "moment";
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref, reactive, onMounted } from "vue";
+import { Category } from "./beans.vue";
 export default defineComponent({
   name: "AddTask",
   setup(props, context) {
     let text = ref("");
     let date = ref(new Date());
     let reminder = ref(false);
-    let categories = reactive([
-      {
-        name: "All",
-        id: 1,
-      },
-      {
-        name: "Important",
-        id: 2,
-      },
-      {
-        name: "Meetings",
-        id: 3,
-      },
-    ]);
+    let categories = reactive<Category[]>([]);
     let category = ref("");
+
     const onSubmit = () => {
       if (!text.value) {
         alert("Please add a task");
@@ -74,9 +63,16 @@ export default defineComponent({
       date.value = new Date();
       reminder.value = false;
     };
-    const fetchCategories = () => {
-      console.log("fetchCategories");
+
+    const fetchCategories = async () => {
+      const res = await fetch(process.env.VUE_APP_API_URL + "/categories");
+      const data = await res.json();
+      categories.push(...data);
     };
+
+    onMounted(() => {
+      fetchCategories();
+    });
 
     return {
       text,
