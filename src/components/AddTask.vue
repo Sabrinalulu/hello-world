@@ -1,5 +1,5 @@
 <template>
-  <form @submit="onSubmit" class="add-form">
+  <form @submit.prevent="onSubmit" class="add-form">
     <div class="form-control">
       <label>Task</label>
       <input type="text" v-model="text" name="text" placeholder="Add Task" />
@@ -9,13 +9,7 @@
       <DatePicker v-model="date" mode="dateTime" :minute-increment="5" is24hr>
         <template v-slot="{ inputValue, inputEvents }">
           <input
-            class="
-              px-2
-              py-1
-              border
-              rounded
-              focus:outline-none focus:border-blue-300
-            "
+            class="px-2 py-1 border rounded focus:outline-none focus:border-blue-300"
             :value="inputValue"
             v-on="inputEvents"
           />
@@ -25,9 +19,8 @@
     <div class="form-control form-control-select">
       <label>Choose a Category</label>
       <select v-model="category">
-        <option :key="category.id" v-for="category in categories">
-          {{ category.name }}
-        </option>
+        <option value disabled>please select</option>
+        <option :key="category.id" v-for="category in categories">{{ category.name }}</option>
       </select>
     </div>
     <div class="form-control form-control-check">
@@ -38,50 +31,95 @@
   </form>
 </template>
 
-<script>
+<script lang = "ts">
 import moment from "moment";
-
-export default {
+import { defineComponent, ref, reactive } from "vue";
+export default defineComponent({
   name: "AddTask",
-  data() {
-    return {
-      text: "",
-      date: new Date(),
-      reminder: false,
-      categories: "",
-      category: "",
-    };
-  },
-  methods: {
-    onSubmit(e) {
-      e.preventDefault();
-      if (!this.text) {
+  setup(props, context) {
+    let text = ref("");
+    let date = ref(new Date());
+    let reminder = ref(false);
+    let categories = reactive([
+      {
+        name: "All",
+        id: 1,
+      },
+      {
+        name: "Important",
+        id: 2,
+      },
+      {
+        name: "Meetings",
+        id: 3,
+      },
+    ]);
+    let category = ref("");
+    const onSubmit = () => {
+      if (!text.value) {
         alert("Please add a task");
         return;
       }
       const newTask = {
-        text: this.text,
-        date: moment(this.date).format("YYYY-MM-DD HH:mm a"),
-        reminder: this.reminder,
-        category: this.category,
+        id: Date.now(),
+        text: text.value,
+        date: moment(String(date.value)).format("YYYY-MM-DD HH:mm a"),
+        reminder: reminder.value,
+        category: category.value,
       };
 
-      this.$emit("add-task", newTask);
+      context.emit("add-task", newTask);
       // clear the things
-      this.text = "";
-      this.date = null;
-      this.reminder = false;
-    },
-    async fetchCategories() {
-      const res = await fetch("api/categories");
-      const data = await res.json();
-      return data;
-    },
+      text.value = "";
+      date.value = new Date();
+      reminder.value = false;
+      // console.log(context);
+    };
+    const fetchCategories = () => {
+      console.log("fetchCategories");
+    };
+
+    //this.categories = await this.fetchCategories();
+    return {
+      text,
+      date,
+      reminder,
+      categories,
+      category,
+      fetchCategories,
+      onSubmit,
+    };
   },
-  async created() {
-    this.categories = await this.fetchCategories();
-  },
-};
+  // methods: {
+  //   onSubmit(e) {
+  //     e.preventDefault();
+  //     if (!this.text) {
+  //       alert("Please add a task");
+  //       return;
+  //     }
+  //     const newTask = {
+  //       text: this.text,
+  //       date: moment(this.date).format("YYYY-MM-DD HH:mm a"),
+  //       reminder: this.reminder,
+  //       category: this.category,
+  //     };
+
+  //     this.$emit("add-task", newTask);
+  //     // clear the things
+  //     this.text = "";
+  //     this.date = null;
+  //     this.reminder = false;
+  //   },
+  // async fetchCategories() {
+  //   const res = await fetch("api/categories");
+  //   const data = await res.json();
+  //   return data;
+  // },
+  // },
+  // async created() {
+  //   this.categories = await this.fetchCategories();
+  // },
+});
 </script>
 
 <style scoped>

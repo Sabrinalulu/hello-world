@@ -1,13 +1,8 @@
-# task-tracker
+# task-tracker-demo
 
 ## Project setup
 ```
 npm install
-```
-
-### Starts the mock server (json-server)
-```
-npm run backend
 ```
 
 ### Compiles and hot-reloads for development

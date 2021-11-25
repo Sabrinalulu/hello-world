@@ -1,9 +1,8 @@
 <template>
   <label>Filter</label>
   <select v-model="category">
-    <option :key="category.id" v-for="category in categories">
-      {{ category.name }}
-    </option>
+    <option value disabled>please select</option>
+    <option :key="category.id" v-for="category in categories">{{ category.name }}</option>
   </select>
   <div :key="task.id" v-for="task in tasks">
     <Task
@@ -15,44 +14,77 @@
   </div>
 </template>
 
-<script>
-import Task from "./Task";
+<script lang="ts">
+import { reactive, ref, defineComponent } from "vue";
+import Task from "./Task.vue";
 
-export default {
+export default defineComponent({
   name: "Tasks",
-  data(){
-    return{
-      categories:[],
-      category:'',
-    }
-  },
   props: {
     tasks: Array,
   },
   components: {
     Task,
   },
-  methods:{
-    async fetchCategories() {
-      const res = await fetch("api/categories");
-      const data = await res.json();
-      return data;
-    },
-    filter(name){
-      if(this.category=="" || this.category=="All"){
+  setup() {
+    let categories = reactive([
+      {
+        name: "All",
+        id: 1,
+      },
+      {
+        name: "Important",
+        id: 2,
+      },
+      {
+        name: "Meetings",
+        id: 3,
+      },
+    ]);
+    let category = ref("");
+    const fetchCategories = () => {
+      console.log("fetchCategories");
+    };
+
+    const filter = (name: string) => {
+      if (category.value === "" || category.value === "All") {
         return true;
       }
-      if(this.category == name){
+      if (category.value === name) {
         return true;
       }
       return false;
-    }
+    };
+    //emits: ["delete-task", "toggle-reminder"],
+    // this.categories = await this.fetchCategories();
+    return {
+      categories,
+      category,
+      fetchCategories,
+      filter,
+    };
   },
-  emits: ["delete-task", "toggle-reminder"],
-  async created() {
-    this.categories = await this.fetchCategories();
-  },
-};
+  // methods: {
+  //   async fetchCategories() {
+  //     const res = await fetch("api/categories");
+  //     const data = await res.json();
+  //     return data;
+  //   },
+  //   filter(name) {
+  //     if (this.category == "" || this.category == "All") {
+  //       return true;
+  //     }
+  //     if (this.category == name) {
+  //       return true;
+  //     }
+  //     return false;
+  //   },
+  // },
+  // emits: ["delete-task", "toggle-reminder"],
+  // async created() {
+  //   this.categories = await this.fetchCategories();
+  // },
+});
 </script>
 
 <style>

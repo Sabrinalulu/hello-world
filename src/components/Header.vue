@@ -5,15 +5,16 @@
       v-show="homePage"
       @toggle-btn="$emit('toggle-add-task')"
       :text="showAddTask ? 'Close' : 'Add Task'"
-      :class="showAddTask ? 'btn btn-warning' : 'btn btn-dark'"
+      :color="showAddTask ? 'btn btn-warning' : 'btn btn-dark'"
     />
   </header>
 </template>
 
 <script>
-import Button from "./Button";
-
-export default {
+import { defineComponent, computed } from "vue";
+import Button from "./Button.vue";
+import { useRoute } from "vue-router";
+export default defineComponent({
   name: "Header",
   props: {
     title: String,
@@ -22,16 +23,12 @@ export default {
   components: {
     Button,
   },
-  computed: {
-    homePage() {
-      if (this.$route.path === "/") {
-        return true;
-      } else {
-        return false;
-      }
-    },
+  setup() {
+    const rout = useRoute();
+    const homePage = computed(() => (rout.path === "/" ? true : false));
+    return { homePage };
   },
-};
+});
 </script>
 
 <style scoped>

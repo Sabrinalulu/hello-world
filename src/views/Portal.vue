@@ -1,20 +1,15 @@
 <template>
   <div class="add-control">
-    <label>Add Category</label><br />
+    <label>Add Category</label>
+    <br />
     <input type="text" v-model="inputCategory" />
-    <button type="button" class="btn btn-primary" @click="addCategory()">
-      Add
-    </button>
+    <button type="button" class="btn btn-primary" @click="addCategory()">Add</button>
   </div>
   <br />
   <div class="list-display">
     <label>Category list</label>
     <ul class="list-group">
-      <li
-        class="list-group-item"
-        :key="category.id"
-        v-for="category in categories"
-      >
+      <li class="list-group-item" :key="category.id" v-for="category in categories">
         {{ category.name }}
         <i
           v-if="category.id != 1"
@@ -26,59 +21,76 @@
   </div>
 </template>
 
-<script>
-
-export default {
+<script lang ="ts">
+import { reactive, ref, defineComponent, onMounted } from "vue";
+import { Category } from "../components/beans.vue";
+export default defineComponent({
   name: "Portal",
-  props: {
-  },
-  components: {
-  },
-  data(){
-    return{
-      inputCategory:'',
-      categories:[],
-    }
-  },
-  methods:{
-    async addCategory() {
-      const newCategory = {
-        name: this.inputCategory,
+  props: {},
+  components: {},
+  setup() {
+    let inputCategory = ref("");
+    let categories = reactive<Category[]>([]);
+
+    const addCategory = async () => {
+      if (inputCategory.value === "") {
+        alert("Please input value");
+        return;
       }
-      const res = await fetch("api/categories", {
+
+      let data = {
+        id: Date.now(),
+        name: inputCategory.value,
+      };
+
+      const res = await fetch(process.env.VUE_APP_API_URL + "/categories", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(newCategory),
+        body: JSON.stringify(data),
       });
+      res.status === 201 ? categories.push(data) : alert("Error detected!");
+      inputCategory.value = "";
+    };
 
+    const fetchCategories = async () => {
+      const res = await fetch(process.env.VUE_APP_API_URL + "/categories");
       const data = await res.json();
+      categories.push(...data);
+    };
 
-      this.categories = [...this.categories, data];
-    },
-    async fetchCategories() {
-      const res = await fetch("api/categories");
-      const data = await res.json();
-      return data;
-    },
-    async onDelete(id) {
-      // console.log('task', id);
+    const onDelete = async (id: number) => {
+      console.log("onDelete");
       if (confirm("Are you sure?")) {
-        const res = await fetch(`api/categories/${id}`, {
-          method: "DELETE",
-        });
-
+        const res = await fetch(
+          `${process.env.VUE_APP_API_URL}/categories/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
         res.status === 200
-          ? (this.categories = this.categories.filter((task) => task.id !== id))
+          ? categories.splice(
+              categories.findIndex((categorie) => categorie.id === id),
+              1
+            )
           : alert("Error detected!");
       }
-    }
+    };
+
+    onMounted(() => {
+      fetchCategories();
+    });
+
+    return {
+      inputCategory,
+      categories,
+      addCategory,
+      fetchCategories,
+      onDelete,
+    };
   },
-  async created() {
-    this.categories = await this.fetchCategories();
-  }
-};
+});
 </script>
 
 <style scoped>
